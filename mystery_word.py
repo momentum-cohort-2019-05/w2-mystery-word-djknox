@@ -1,3 +1,6 @@
+# import random library for randomly selecting a word
+import random
+
 # load words from words.txt
 # return a list of the words
 def load_words():
@@ -62,5 +65,7 @@ or enter "x" to quit the game.""")
         else:
             print("\nthat wasn't an option!\n")
 
-        # TODO: choose a random word from the chosen list
-        # TODO: tell the user how many letters the chosen word contains
+        # choose a random word from the chosen list
+        chosen_word = random.choice(chosen_list)
+        # tell the user how many letters the chosen word contains
+        print(f"The chosen word has {len(chosen_word)} letters.")
