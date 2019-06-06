@@ -67,19 +67,49 @@ or enter "x" to quit the game.""")
         chosen_word = random.choice(chosen_list)
         print(f"The chosen word has {len(chosen_word)} letters.")
 
-        # Ask the user to supply one guess (i.e. letter) per round. This letter can be upper or lower case and it should not matter. If a user enters more than one letter, tell them the input is invalid and let them try again.
-        valid_input = False
-        while not valid_input:
-            guess = input("Guess a letter! ")
-            # if guess is more than one letter or not a letter
-            if len(guess) > 1 or not guess.isalpha():
-                print("Input invalid. Guess again.")
-            else:
-                valid_input = True
+        # A user is allowed 8 guesses. Remind the user of how many guesses they have left after each round.
+        num_guesses_allowed = 8
+        num_guesses = 0
+        guesses = []
+        letters_left_to_guess = list(chosen_word)
+        # The game should end when the user constructs the full word or runs out of guesses.
+        while num_guesses < num_guesses_allowed and len(letters_left_to_guess) > 0:
 
-        # Let the user know if their guess appears in the computer's word.
-        if guess in chosen_word:
-            print("That letter is in the word!")
-        else:
-            print("That letter is not in the word!")
+            # TODO: remove this print() statement!
+            print("LETTERS LEFT TO GUESS: ", letters_left_to_guess, len(letters_left_to_guess))
+
+            # Ask the user to supply one guess (i.e. letter) per round. This letter can be upper or lower case and it should not matter. If a user enters more than one letter, tell them the input is invalid and let them try again.
+            valid_input = False
+            while not valid_input:
+                guess = input("Guess a letter! ")
+                # if guess is more than one letter or not a letter
+                if len(guess) > 1 or not guess.isalpha():
+                    print("Input invalid. Guess again.")
+                else:
+                    valid_input = True
+
+            # Let the user know if their guess appears in the computer's word.
+            # A user loses a guess only when they guess incorrectly. If they guess a letter that is in the computer's word, they do not lose a guess.
+            # If the user guesses the same letter twice, do not take away a guess. Instead, print a message letting them know they've already guessed that letter and ask them to try again.
+            if guess in guesses:
+                print("You've already guessed that letter!")
+                print(f"You have {num_guesses_allowed - num_guesses} guesses left")
+            elif guess in chosen_word:
+                # add guess to guesses
+                guesses.append(guess)
+                # remove all occurrences of correct guess from letters_left_to_guess
+                letters_left_to_guess = [letter for letter in letters_left_to_guess if letter != guess]
+                print("That letter is in the word!")
+                print(f"You have {num_guesses_allowed - num_guesses} guesses left")
+            else:
+                num_guesses += 1
+                guesses.append(guess)
+                print("That letter is not in the word!")
+                print(f"You have {num_guesses_allowed - num_guesses} guesses left")
         
+        # If the player runs out of guesses, reveal the word to the user when the game ends.
+        print(f"The word was {chosen_word}!")
+        
+        # TODO: 
+        # When a game ends, ask the user if they want to play again. The game begins again if they reply positively.
+        # lowercase and uppercase?
