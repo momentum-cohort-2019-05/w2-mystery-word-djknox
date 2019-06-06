@@ -20,9 +20,9 @@ def load_words():
 def sort_words_by_difficulty(a_list_of_words):
     """
     Given a list of words, group the words based on length and return a dictionary of the groups.
-        easy: 4-6 characters
+        easy: 4-5 characters
         normal: 6-8 characters
-        difficult: 8+ characters
+        difficult: >8 characters
     """
     easy_list = [word for word in a_list_of_words if len(word) >= 4 and len(word) < 6]
     normal_list = [word for word in a_list_of_words if len(word) >= 6 and len(word) <= 8]
@@ -52,8 +52,6 @@ or enter "x" to quit the game.""")
         # sort the words based on their difficulty
         words_sorted_by_difficulty = sort_words_by_difficulty(words)
         # take the user's choice of difficulty and choose a list
-        chosen_list = []
-
         if option == '1':
             chosen_list = words_sorted_by_difficulty['easy']
         elif option == '2':
@@ -65,7 +63,23 @@ or enter "x" to quit the game.""")
         else:
             print("\nthat wasn't an option!\n")
 
-        # choose a random word from the chosen list
+        # choose a random word from the chosen list and tell the user its length
         chosen_word = random.choice(chosen_list)
-        # tell the user how many letters the chosen word contains
         print(f"The chosen word has {len(chosen_word)} letters.")
+
+        # Ask the user to supply one guess (i.e. letter) per round. This letter can be upper or lower case and it should not matter. If a user enters more than one letter, tell them the input is invalid and let them try again.
+        valid_input = False
+        while not valid_input:
+            guess = input("Guess a letter! ")
+            # if guess is more than one letter or not a letter
+            if len(guess) > 1 or not guess.isalpha():
+                print("Input invalid. Guess again.")
+            else:
+                valid_input = True
+
+        # Let the user know if their guess appears in the computer's word.
+        if guess in chosen_word:
+            print("That letter is in the word!")
+        else:
+            print("That letter is not in the word!")
+        
