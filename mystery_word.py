@@ -75,8 +75,8 @@ or enter "x" to quit the game.""")
         # The game should end when the user constructs the full word or runs out of guesses.
         while num_guesses < num_guesses_allowed and len(letters_left_to_guess) > 0:
 
-            # TODO: remove this print() statement!
-            print("LETTERS LEFT TO GUESS: ", letters_left_to_guess, len(letters_left_to_guess))
+            # Display the partially guessed word, as well as letters that have not been guessed.
+            print([letter if letter in guesses else "_" for letter in chosen_word])
 
             # Ask the user to supply one guess (i.e. letter) per round. This letter can be upper or lower case and it should not matter. If a user enters more than one letter, tell them the input is invalid and let them try again.
             valid_input = False
