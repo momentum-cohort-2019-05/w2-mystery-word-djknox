@@ -34,18 +34,37 @@ def sort_words_by_difficulty(a_list_of_words):
         'difficult': difficult_list
     }
 
+def display_num_guesses_remaining(num_guesses_allowed, num_guesses):
+    """
+    Given an integer for the number of guesses allowed and an integer for the number of guesses made, print out a string telling the user how many guesses they have remaining.
+    """
+    num_guesses_remaining = num_guesses_allowed - num_guesses
+    if num_guesses_remaining > 1:
+        print(f"You have {num_guesses_remaining} guesses left.")
+    elif num_guesses_remaining == 1:
+        print(f"You have {num_guesses_remaining} guess left!")
+
+
 if __name__ == "__main__":
     while True:
-        print("""Welcome to the game of Mystery Word!
+        print('Welcome to the game of Mystery Word!')
 
-Select a difficulty mode by entering one of the following numbers:
+        # ask user for difficulty setting or to quit game
+        valid_option = False
+        while not valid_option:
+            print("""Select a difficulty mode by entering one of the following numbers:
+
 1 - easy (words with 4-6 characters)
 2 - normal (words with 6-8 characters)
 3 - difficult (words with 8+ characters)
 
-or enter "x" to quit the game.""")
-
-        option = input("Choose an option: ")
+or enter "x" to quit the game.
+""")
+            option = input("Choose an option: ")
+            if option not in ['1', '2', '3', 'X', 'x']:
+                print("\nthat wasn't an option!\n")
+            else:
+                valid_option = True
 
         # load the words from the text file
         words = load_words()
@@ -60,8 +79,6 @@ or enter "x" to quit the game.""")
             chosen_list = words_sorted_by_difficulty['difficult']
         elif option == 'X' or option == 'x':
             break
-        else:
-            print("\nthat wasn't an option!\n")
 
         # choose a random word from the chosen list and tell the user its length
         chosen_word = random.choice(chosen_list)
@@ -72,6 +89,7 @@ or enter "x" to quit the game.""")
         num_guesses = 0
         guesses = []
         letters_left_to_guess = list(chosen_word)
+
         # The game should end when the user constructs the full word or runs out of guesses.
         while num_guesses < num_guesses_allowed and len(letters_left_to_guess) > 0:
 
@@ -93,22 +111,26 @@ or enter "x" to quit the game.""")
             # If the user guesses the same letter twice, do not take away a guess. Instead, print a message letting them know they've already guessed that letter and ask them to try again.
             if guess in guesses:
                 print("You've already guessed that letter!")
-                print(f"You have {num_guesses_allowed - num_guesses} guesses left")
             elif guess in chosen_word:
+                print("That letter is in the word!")
                 # add guess to guesses
                 guesses.append(guess)
                 # remove all occurrences of correct guess from letters_left_to_guess
                 letters_left_to_guess = [letter for letter in letters_left_to_guess if letter != guess]
-                print("That letter is in the word!")
-                print(f"You have {num_guesses_allowed - num_guesses} guesses left")
-            else:
+            elif guess not in chosen_word:
+                print("That letter is not in the word!")
                 num_guesses += 1
                 guesses.append(guess)
-                print("That letter is not in the word!")
-                print(f"You have {num_guesses_allowed - num_guesses} guesses left")
+            
+            # tell the user how many guesses they have left
+            display_num_guesses_remaining(num_guesses_allowed, num_guesses)
         
         # If the player runs out of guesses, reveal the word to the user when the game ends.
-        print(f"The word was {chosen_word}!")
+        print(f"""
+
+The word was {chosen_word}!
+
+        """)
         
         # TODO: 
         # When a game ends, ask the user if they want to play again. The game begins again if they reply positively.
