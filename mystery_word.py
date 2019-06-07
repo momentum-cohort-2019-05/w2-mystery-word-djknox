@@ -133,17 +133,15 @@ or enter "x" to quit the game.
             display_num_guesses_remaining(num_guesses_allowed, num_guesses)
         
         # If the player runs out of guesses, reveal the word to the user when the game ends.
-        print(f"""
+        if len(letters_left_to_guess) == 0:
+            print("You won!")
+        else:
+            print("You lost!")
 
-The word was {chosen_word}!
-
-        """)
+        print(f"The word was {chosen_word}!")
 
         # When a game ends, ask the user if they want to play again. The game begins again if they reply positively.
         print("Enter '1' to play again and anything else to quit the game.")
         does_user_want_to_play_again = input("Play again? ")
         if does_user_want_to_play_again != '1':
             replay_game = False
-
-# TODO:
-# when the user guesses the word, let them know that they won more clearly
