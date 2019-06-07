@@ -1,8 +1,6 @@
 # import random library for randomly selecting a word
 import random
 
-# load words from words.txt
-# return a list of the words
 def load_words():
     """
     Load each line from words.txt as an element in a list and return
@@ -14,9 +12,6 @@ def load_words():
             words.append(line)
     return words
 
-# separate words from words.txt into three separate lists based on word length:
-# 4-6chars, 6-8chars, and 8+chars
-# return a dictionary of the three difficulties and their corresponding lists
 def sort_words_by_difficulty(a_list_of_words):
     """
     Given a list of words, group the words based on length and return a dictionary of the groups.
@@ -85,22 +80,33 @@ or enter "x" to quit the game.
         chosen_word = random.choice(chosen_list)
         print(f"The chosen word has {len(chosen_word)} letters.")
 
+        # in order to make letter casing not matter, make chosen_word lowercase
+        # will also make all inputted guesses lowercase and check against chosen_word_lowercase
+        chosen_word_lowercase = chosen_word.lower()
+
+
+
+        # TODO: DELETE THIS PRINT STATEMENT - FOR DEV ONLY
+        print("THE CHOSEN WORD IS: ", chosen_word)
+
+
         # A user is allowed 8 guesses. Remind the user of how many guesses they have left after each round.
         num_guesses_allowed = 8
         num_guesses = 0
         guesses = []
-        letters_left_to_guess = list(chosen_word)
+        letters_left_to_guess = list(chosen_word_lowercase)
 
         # The game should end when the user constructs the full word or runs out of guesses.
         while num_guesses < num_guesses_allowed and len(letters_left_to_guess) > 0:
 
             # Display the partially guessed word, as well as letters that have not been guessed.
-            print([letter if letter in guesses else "_" for letter in chosen_word])
+            print([letter if letter in guesses else "_" for letter in chosen_word_lowercase])
 
             # Ask the user to supply one guess (i.e. letter) per round. This letter can be upper or lower case and it should not matter. If a user enters more than one letter, tell them the input is invalid and let them try again.
             valid_input = False
             while not valid_input:
-                guess = input("Guess a letter! ")
+                # ask user to guess a letter and immediately make their guess lowercase
+                guess = input("Guess a letter! ").lower()
                 # if guess is more than one letter or not a letter
                 if len(guess) > 1 or not guess.isalpha():
                     print("Input invalid. Guess again.")
@@ -112,13 +118,13 @@ or enter "x" to quit the game.
             # If the user guesses the same letter twice, do not take away a guess. Instead, print a message letting them know they've already guessed that letter and ask them to try again.
             if guess in guesses:
                 print("You've already guessed that letter!")
-            elif guess in chosen_word:
+            elif guess in chosen_word_lowercase:
                 print("That letter is in the word!")
                 # add guess to guesses
                 guesses.append(guess)
                 # remove all occurrences of correct guess from letters_left_to_guess
                 letters_left_to_guess = [letter for letter in letters_left_to_guess if letter != guess]
-            elif guess not in chosen_word:
+            elif guess not in chosen_word_lowercase:
                 print("That letter is not in the word!")
                 num_guesses += 1
                 guesses.append(guess)
@@ -138,6 +144,6 @@ The word was {chosen_word}!
         does_user_want_to_play_again = input("Play again? ")
         if does_user_want_to_play_again != '1':
             replay_game = False
-        
-        # TODO: 
-        # lowercase and uppercase?
+
+# TODO:
+# when the user guesses the word, let them know that they won more clearly
