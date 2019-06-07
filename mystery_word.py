@@ -46,7 +46,8 @@ def display_num_guesses_remaining(num_guesses_allowed, num_guesses):
 
 
 if __name__ == "__main__":
-    while True:
+    replay_game = True
+    while replay_game:
         print('Welcome to the game of Mystery Word!')
 
         # ask user for difficulty setting or to quit game
@@ -131,7 +132,12 @@ or enter "x" to quit the game.
 The word was {chosen_word}!
 
         """)
+
+        # When a game ends, ask the user if they want to play again. The game begins again if they reply positively.
+        print("Enter '1' to play again and anything else to quit the game.")
+        does_user_want_to_play_again = input("Play again? ")
+        if does_user_want_to_play_again != '1':
+            replay_game = False
         
         # TODO: 
-        # When a game ends, ask the user if they want to play again. The game begins again if they reply positively.
         # lowercase and uppercase?
