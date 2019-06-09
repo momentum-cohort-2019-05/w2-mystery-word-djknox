@@ -4,6 +4,9 @@ import random
 # import dedent function from textwrap module to fix indentation of multi-line strings
 from textwrap import dedent
 
+# import get_terminal_size function from os to center console output
+from os import get_terminal_size
+
 def print_difficulty_setting_instructions():
     """
     Print the difficulty setting instructions to the user.
@@ -90,8 +93,11 @@ def display_num_guesses_remaining(num_guesses_allowed, num_guesses):
 if __name__ == "__main__":
     replay_game = True
     while replay_game:
-        # print greeting and difficulty settings to user
-        print('Welcome to the Mystery Word game!')
+        # terminal_width will be used for centering console output
+        terminal_width = get_terminal_size().columns
+
+        # print centered greeting and difficulty settings to user
+        print(f"{'Welcome to the Mystery Word game!':^{terminal_width}}")
         print_difficulty_setting_instructions()
 
         # ask user for difficulty setting or to quit game
@@ -99,7 +105,7 @@ if __name__ == "__main__":
 
         # exit the loop of user selects 'x'
         if option == 'x':
-            print("Quitting game!")
+            print(f"{'Quitting game!':^{terminal_width}}")
             break
 
         # load the words from the text file
@@ -113,7 +119,8 @@ if __name__ == "__main__":
 
         # choose a random word from the chosen list and tell the user its length
         chosen_word = random.choice(chosen_list)
-        print(f"The chosen word has {len(chosen_word)} letters.")
+        word_length_message = f"The chosen word has {len(chosen_word)} letters."
+        print(f"{word_length_message:^{terminal_width}}")
 
         # in order to make letter casing not matter, make chosen_word lowercase
         # will also make all inputted guesses lowercase and check against chosen_word_lowercase
@@ -129,7 +136,11 @@ if __name__ == "__main__":
         while num_guesses < num_guesses_allowed and len(letters_left_to_guess) > 0:
 
             # Display the partially guessed word, as well as letters that have not been guessed.
-            print([letter if letter in guesses else "_" for letter in chosen_word_lowercase])
+            # create list of letters that have been guessed and underscores for those that have not
+            partially_guessed_word = [letter if letter in guesses else "_" for letter in chosen_word_lowercase]
+            # collapse list into a string separated by spaces for formatting
+            partially_guessed_word = ' '.join(partially_guessed_word)
+            print(f"{partially_guessed_word:^{terminal_width}}")
 
             # Ask the user to supply one guess (i.e. letter) per round. This letter can be upper or lower case and it should not matter. If a user enters more than one letter, tell them the input is invalid and let them try again.
             valid_input = False
@@ -158,19 +169,21 @@ if __name__ == "__main__":
                 num_guesses += 1
                 guesses.append(guess)
             
-            # show the user a list of the letters they have already guessed
-            print(f"Letters guessed: {guesses}")
-
             # tell the user how many guesses they have left
             display_num_guesses_remaining(num_guesses_allowed, num_guesses)
+
+            # show the user a list of the letters they have already guessed
+            letters_guessed_message = f"Letters guessed: {guesses}"
+            print(f"{letters_guessed_message:^{terminal_width}}")
         
         # If the player runs out of guesses, reveal the word to the user when the game ends.
         if len(letters_left_to_guess) == 0:
-            print("You won!")
+            print(f"{'You won!':^{terminal_width}}")
         else:
-            print("You lost!")
+            print(f"{'You lost!':^{terminal_width}}")
 
-        print(f"The word was {chosen_word}!")
+        chosen_word_message = f"The word was {chosen_word}!"
+        print(f"{chosen_word_message:^{terminal_width}}")
 
         # When a game ends, ask the user if they want to play again. The game begins again if they reply positively.
         print("Enter '1' to play again and anything else to quit the game.")
@@ -178,8 +191,5 @@ if __name__ == "__main__":
         if does_user_want_to_play_again == '1':
             print("Let's play again!")
         else:
-            print("Thanks for playing!")
+            print(f"{'Thanks for playing!':^{terminal_width}}")
             replay_game = False
-
-# TODO:
-# format console output so that game is more easily read on the screen (add spacing/line breaks)
