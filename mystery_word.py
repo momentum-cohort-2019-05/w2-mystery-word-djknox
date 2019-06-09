@@ -29,7 +29,8 @@ def ask_user_for_difficulty_setting():
     while not valid_option:
         option = input("Choose an option: ").lower()
         if option not in ['1', '2', '3', 'x']:
-            print("\nthat wasn't an option!\n")
+            print("\nThat wasn't an option! Please try again.")
+            print_difficulty_setting_instructions()
         else:
             valid_option = True
 
@@ -49,13 +50,13 @@ def load_words():
 def group_words_by_difficulty(a_list_of_words):
     """
     Given a list of words, group the words based on length and return a dictionary of the groups.
-        easy: 4-5 characters
+        easy: 4-6 characters
         normal: 6-8 characters
-        difficult: >8 characters
+        difficult: 8+ characters
     """
-    easy_list = [word for word in a_list_of_words if len(word) >= 4 and len(word) < 6]
+    easy_list = [word for word in a_list_of_words if len(word) >= 4 and len(word) <= 6]
     normal_list = [word for word in a_list_of_words if len(word) >= 6 and len(word) <= 8]
-    difficult_list = [word for word in a_list_of_words if len(word) > 8]
+    difficult_list = [word for word in a_list_of_words if len(word) >= 8]
     
     return {
         'easy': easy_list,
@@ -96,19 +97,19 @@ if __name__ == "__main__":
         # ask user for difficulty setting or to quit game
         option = ask_user_for_difficulty_setting()
 
+        # exit the loop of user selects 'x'
+        if option == 'x':
+            print("Quitting game!")
+            break
+
         # load the words from the text file
         words = load_words()
 
         # sort the words based on their difficulty
         words_grouped_by_difficulty = group_words_by_difficulty(words)
-
-        # exit the loop of user selects 'x'
-        # else take the user's choice of difficulty and choose a list
-        if option == 'x':
-            print("Quitting game!")
-            break
-        else:
-            chosen_list = choose_list_of_words_based_on_difficulty_setting(words_grouped_by_difficulty, option)
+        
+        # take the user's choice of difficulty and choose a list based on the user's option
+        chosen_list = choose_list_of_words_based_on_difficulty_setting(words_grouped_by_difficulty, option)
 
         # choose a random word from the chosen list and tell the user its length
         chosen_word = random.choice(chosen_list)
@@ -117,12 +118,6 @@ if __name__ == "__main__":
         # in order to make letter casing not matter, make chosen_word lowercase
         # will also make all inputted guesses lowercase and check against chosen_word_lowercase
         chosen_word_lowercase = chosen_word.lower()
-
-
-
-        # TODO: DELETE THIS PRINT STATEMENT - FOR DEV ONLY
-        print("THE CHOSEN WORD IS: ", chosen_word)
-
 
         # A user is allowed 8 guesses. Remind the user of how many guesses they have left after each round.
         num_guesses_allowed = 8
@@ -182,3 +177,7 @@ if __name__ == "__main__":
         else:
             print("Thanks for playing!")
             replay_game = False
+
+# TODO (for fun)
+# show the user a list of the letters they have already guessed
+# format console output so that game is more easily read on the screen (add spacing/line breaks)
