@@ -158,6 +158,9 @@ if __name__ == "__main__":
                 num_guesses += 1
                 guesses.append(guess)
             
+            # show the user a list of the letters they have already guessed
+            print(f"Letters guessed: {guesses}")
+
             # tell the user how many guesses they have left
             display_num_guesses_remaining(num_guesses_allowed, num_guesses)
         
@@ -178,6 +181,5 @@ if __name__ == "__main__":
             print("Thanks for playing!")
             replay_game = False
 
-# TODO (for fun)
-# show the user a list of the letters they have already guessed
+# TODO:
 # format console output so that game is more easily read on the screen (add spacing/line breaks)
